@@ -1,0 +1,1 @@
+This is Spring boot project with spring web and spring JPA, this shows one to one, many to one, one to many mapping with JPA, also json managed ref and back ref annotations to avoid infinite loop when bidirectional mapping is present.
