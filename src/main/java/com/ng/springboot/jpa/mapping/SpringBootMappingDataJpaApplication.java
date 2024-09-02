@@ -10,7 +10,6 @@ import com.ng.springboot.jpa.mapping.entities.Post;
 import com.ng.springboot.jpa.mapping.entities.Product;
 import com.ng.springboot.jpa.mapping.entities.ProductDetails;
 import com.ng.springboot.jpa.mapping.entities.User;
-import com.ng.springboot.jpa.mapping.repositories.CommentRepository;
 import com.ng.springboot.jpa.mapping.repositories.PostRepository;
 import com.ng.springboot.jpa.mapping.repositories.ProductRepository;
 import com.ng.springboot.jpa.mapping.repositories.UserRepository;
@@ -64,33 +63,47 @@ public class SpringBootMappingDataJpaApplication {
 		UserRepository userRepository = context.getBean(UserRepository.class);
 		userRepository.save(user);
 
-		Comment comment = new Comment("I am Nirmal Commentin on my post @" + System.currentTimeMillis(), user, null);
-		Post post = new Post("Hello World ! I am posting from Facebook @" + System.currentTimeMillis(), comment, user);
+		Comment comment = new Comment();
+		comment.setComment("I am Nirmal Commentin on my post @" + System.currentTimeMillis());
+		comment.setCommenter(user);
+
+		// Comment comment = new Comment("I am Nirmal Commentin on my post @" +
+		// System.currentTimeMillis(), user, null);
+		Post post = new Post();
+
+		post.setContent("Hello World ! I am posting from Facebook @" + System.currentTimeMillis());
+		post.setUser(user);
+		post.addComment(comment);
+
+		// Post post = new Post("Hello World ! I am posting from Facebook @" +
+		// System.currentTimeMillis(), comment, user);
 
 		PostRepository postRepository = context.getBean(PostRepository.class);
-		postRepository.save(post);
+		post = postRepository.save(post);
 
 		User commenter = new User("Charan@" + System.currentTimeMillis(), address);
 		userRepository.save(commenter);
 
-		CommentRepository commentRepository = context.getBean(CommentRepository.class);
+		// CommentRepository commentRepository =
+		// context.getBean(CommentRepository.class);
 
 		System.out.println(post.getId());
 
-		comment = new Comment("Welcome Nirmal bhaiya @" + System.currentTimeMillis(), commenter, post);
+		comment = new Comment();
+		comment.setComment("Welcome Nirmal bhaiya @" + System.currentTimeMillis());
+		comment.setCommenter(commenter);
 
-		commentRepository.save(comment);
+		post.addComment(comment);
 
-		comment = new Comment("We Hope, you will enjoy here, Nirmal bhaiya @" + System.currentTimeMillis(), commenter,
-				post);
+		post = postRepository.save(post);
 
-		commentRepository.save(comment);
+		comment = new Comment();
+		comment.setComment("We Hope, you will enjoy here, Nirmal bhaiya @" + System.currentTimeMillis());
+		comment.setCommenter(commenter);
 
-		post.setComment(new Comment("Welcome Nirmal bhaiya @" + System.currentTimeMillis(), commenter));
-		post.setComment(
-				new Comment("We Hope, you will enjoy here, Nirmal bhaiya @" + System.currentTimeMillis(), commenter));
+		post.addComment(comment);
 
-		postRepository.save(post);
+		post = postRepository.save(post);
 
 	}
 

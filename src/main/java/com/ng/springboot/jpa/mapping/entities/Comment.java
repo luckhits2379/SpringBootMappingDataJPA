@@ -8,6 +8,7 @@ import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
 import jakarta.persistence.JoinColumn;
 import jakarta.persistence.ManyToOne;
+import jakarta.persistence.PreRemove;
 
 @Entity
 public class Comment {
@@ -58,22 +59,15 @@ public class Comment {
 		this.post = post;
 	}
 
-	public Comment(String comment, User commenter, Post post) {
-		super();
-		this.comment = comment;
-		this.commenter = commenter;
-		this.post = post;
-	}
-
-	public Comment(String comment, User commenter) {
-		super();
-		this.comment = comment;
-		this.commenter = commenter;
-	}
-
 	public Comment() {
 		super();
 		// TODO Auto-generated constructor stub
+	}
+
+	@PreRemove
+	public void removePost() {
+
+		this.post.removeComment(id);
 	}
 
 	@Override

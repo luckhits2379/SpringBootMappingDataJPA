@@ -37,7 +37,7 @@ public class Post {
 	// no longer referenced by the parent entity. Orphan removeal will only work in
 	// code, it wont delete orpahned record if
 	// mapping removed directly in db
-	@OneToMany(cascade = CascadeType.ALL, orphanRemoval = true, fetch = FetchType.EAGER)
+	@OneToMany(mappedBy = "post", cascade = CascadeType.ALL, orphanRemoval = true, fetch = FetchType.EAGER)
 	@JsonManagedReference
 	private List<Comment> comments = new ArrayList<Comment>();
 
@@ -86,24 +86,32 @@ public class Post {
 		return "Post [id=" + id + ", content=" + content + ", comments=" + comments + ", user=" + user + "]";
 	}
 
-	public Post(String content, Comment comment, User user) {
-
-		super();
-
-		this.content = content;
-
-		if (comment != null) {
-
-			comment.setPost(this); // this is important else comment will be stored but not post mapping
-			this.comments.add(comment);
-		}
-
-		this.user = user;
-	}
-
 	public Post() {
 		super();
 		// TODO Auto-generated constructor stub
+	}
+
+	public void addComment(Comment comment) {
+
+		comment.setPost(this);
+		comments.add(comment);
+
+	}
+
+	public boolean removeComment(int id) {
+
+		for (Comment comment : comments) {
+
+			if (comment.getId() == id) {
+
+				comments.remove(comment);
+
+				return true;
+			}
+		}
+
+		return false;
+
 	}
 
 }

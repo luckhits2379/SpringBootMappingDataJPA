@@ -22,14 +22,14 @@ public class PostController {
 	PostRepository postRepository;
 
 	@GetMapping(value = "/posts/{id}")
-	public ResponseEntity<Optional<Post>> getBookById(@PathVariable(required = true) String id) {
+	public ResponseEntity<Optional<Post>> getPost(@PathVariable(required = true) String id) {
 
 		return ResponseEntity.ok(postRepository.findById(Integer.parseInt(id)));
 
 	}
 
 	@PostMapping(value = "/posts/")
-	public ResponseEntity<Void> createBook(@RequestBody Post post) throws URISyntaxException {
+	public ResponseEntity<Void> createPost(@RequestBody Post post) throws URISyntaxException {
 
 		Post createdPost = postRepository.save(post);
 
