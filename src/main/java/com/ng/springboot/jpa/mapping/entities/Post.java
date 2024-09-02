@@ -35,8 +35,7 @@ public class Post {
 	// The orphanRemoval attribute is used in a one-to-many relationship to specify
 	// whether associated entities should be removed from the database when they are
 	// no longer referenced by the parent entity. Orphan removeal will only work in
-	// code, it wont delete orpahned record if
-	// mapping removed directly in db
+	// code, it wont delete orpahned record if mapping removed directly in db
 	@OneToMany(mappedBy = "post", cascade = CascadeType.ALL, orphanRemoval = true, fetch = FetchType.EAGER)
 	@JsonManagedReference
 	private List<Comment> comments = new ArrayList<Comment>();

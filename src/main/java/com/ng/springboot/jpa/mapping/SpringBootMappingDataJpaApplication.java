@@ -1,15 +1,21 @@
 package com.ng.springboot.jpa.mapping;
 
+import java.util.Optional;
+import java.util.Set;
+
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.context.ApplicationContext;
 
 import com.ng.springboot.jpa.mapping.entities.Address;
 import com.ng.springboot.jpa.mapping.entities.Comment;
+import com.ng.springboot.jpa.mapping.entities.Employee;
 import com.ng.springboot.jpa.mapping.entities.Post;
 import com.ng.springboot.jpa.mapping.entities.Product;
 import com.ng.springboot.jpa.mapping.entities.ProductDetails;
+import com.ng.springboot.jpa.mapping.entities.Project;
 import com.ng.springboot.jpa.mapping.entities.User;
+import com.ng.springboot.jpa.mapping.repositories.EmployeeRepository;
 import com.ng.springboot.jpa.mapping.repositories.PostRepository;
 import com.ng.springboot.jpa.mapping.repositories.ProductRepository;
 import com.ng.springboot.jpa.mapping.repositories.UserRepository;
@@ -30,11 +36,25 @@ public class SpringBootMappingDataJpaApplication {
 
 		if (true) {
 
+			EmployeeRepository employeeRepo = null;
+
+			JPAmappingTestManyToMany(employeeRepo = context.getBean(EmployeeRepository.class));
+
+			Optional<Employee> retrivedEmployee = employeeRepo.findById(1l);
+
+			System.out.println(retrivedEmployee.get().getProjects());
+
+			System.out.println(retrivedEmployee.get());
+
+		}
+
+		if (false) {
+
 			JPAmappingTestOneToMany(context);
 
 		}
 
-		if (true) {
+		if (false) {
 
 			JPAmappingTestOneToOne(context);
 
@@ -51,6 +71,23 @@ public class SpringBootMappingDataJpaApplication {
 		Product product = new Product("Laptop", new ProductDetails("Dell Laptop with i5 processor"));
 
 		productRepo.save(product);
+
+	}
+
+	public static void JPAmappingTestManyToMany(EmployeeRepository employeeRepo) {
+
+		Employee employee = new Employee();
+		employee.setName("Nirmal Gurjar");
+
+		Project project1 = new Project();
+		project1.setProject("TCS iON Energy");
+
+		Project project2 = new Project();
+		project2.setProject("TCS iON UCP");
+
+		employee.setProjects(Set.of(project1, project2));
+
+		employeeRepo.save(employee);
 
 	}
 
